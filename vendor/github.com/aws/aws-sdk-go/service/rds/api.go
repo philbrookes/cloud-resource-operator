@@ -18626,7 +18626,7 @@ func (s *CreateDBClusterSnapshotOutput) SetDBClusterSnapshot(v *DBClusterSnapsho
 type CreateDBInstanceInput struct {
 	_ struct{} `type:"structure"`
 
-	// The amount of storage (in gibibytes) to allocate for the DB instance.
+	// The amount of storage in gibibytes (GiB) to allocate for the DB instance.
 	//
 	// Type: Integer
 	//
@@ -19189,8 +19189,8 @@ type CreateDBInstanceInput struct {
 	//    * Can't be a reserved word for the chosen database engine.
 	MasterUsername *string `type:"string"`
 
-	// The upper limit to which Amazon RDS can automatically scale the storage of
-	// the DB instance.
+	// The upper limit in gibibytes (GiB) to which Amazon RDS can automatically
+	// scale the storage of the DB instance.
 	//
 	// For more information about this setting, including limitations that apply
 	// to it, see Managing capacity automatically with Amazon RDS storage autoscaling
@@ -19914,8 +19914,8 @@ type CreateDBInstanceReadReplicaInput struct {
 	// You can't create an encrypted read replica from an unencrypted DB instance.
 	KmsKeyId *string `type:"string"`
 
-	// The upper limit to which Amazon RDS can automatically scale the storage of
-	// the DB instance.
+	// The upper limit in gibibytes (GiB) to which Amazon RDS can automatically
+	// scale the storage of the DB instance.
 	//
 	// For more information about this setting, including limitations that apply
 	// to it, see Managing capacity automatically with Amazon RDS storage autoscaling
@@ -21674,6 +21674,9 @@ type DBCluster struct {
 	// Web Services on your behalf.
 	AssociatedRoles []*DBClusterRole `locationNameList:"DBClusterRole" type:"list"`
 
+	// The time when a stopped DB cluster is restarted automatically.
+	AutomaticRestartTime *time.Time `type:"timestamp"`
+
 	// Provides the list of Availability Zones (AZs) where instances in the DB cluster
 	// can be created.
 	AvailabilityZones []*string `locationNameList:"AvailabilityZone" type:"list"`
@@ -21935,6 +21938,12 @@ func (s *DBCluster) SetAllocatedStorage(v int64) *DBCluster {
 // SetAssociatedRoles sets the AssociatedRoles field's value.
 func (s *DBCluster) SetAssociatedRoles(v []*DBClusterRole) *DBCluster {
 	s.AssociatedRoles = v
+	return s
+}
+
+// SetAutomaticRestartTime sets the AutomaticRestartTime field's value.
+func (s *DBCluster) SetAutomaticRestartTime(v time.Time) *DBCluster {
+	s.AutomaticRestartTime = &v
 	return s
 }
 
@@ -23130,7 +23139,7 @@ type DBInstance struct {
 	// The status of the database activity stream.
 	ActivityStreamStatus *string `type:"string" enum:"ActivityStreamStatus"`
 
-	// Specifies the allocated storage size specified in gibibytes.
+	// Specifies the allocated storage size specified in gibibytes (GiB).
 	AllocatedStorage *int64 `type:"integer"`
 
 	// The Amazon Web Services Identity and Access Management (IAM) roles associated
@@ -23139,6 +23148,9 @@ type DBInstance struct {
 
 	// A value that indicates that minor version patches are applied automatically.
 	AutoMinorVersionUpgrade *bool `type:"boolean"`
+
+	// The time when a stopped DB instance is restarted automatically.
+	AutomaticRestartTime *time.Time `type:"timestamp"`
 
 	// Specifies the name of the Availability Zone the DB instance is located in.
 	AvailabilityZone *string `type:"string"`
@@ -23262,6 +23274,8 @@ type DBInstance struct {
 	EnabledCloudwatchLogsExports []*string `type:"list"`
 
 	// Specifies the connection endpoint.
+	//
+	// The endpoint might not be shown for instances whose status is creating.
 	Endpoint *Endpoint `type:"structure"`
 
 	// The name of the database engine to be used for this DB instance.
@@ -23313,8 +23327,8 @@ type DBInstance struct {
 	// Contains the master username for the DB instance.
 	MasterUsername *string `type:"string"`
 
-	// The upper limit to which Amazon RDS can automatically scale the storage of
-	// the DB instance.
+	// The upper limit in gibibytes (GiB) to which Amazon RDS can automatically
+	// scale the storage of the DB instance.
 	MaxAllocatedStorage *int64 `type:"integer"`
 
 	// The interval, in seconds, between points when Enhanced Monitoring metrics
@@ -23500,6 +23514,12 @@ func (s *DBInstance) SetAssociatedRoles(v []*DBInstanceRole) *DBInstance {
 // SetAutoMinorVersionUpgrade sets the AutoMinorVersionUpgrade field's value.
 func (s *DBInstance) SetAutoMinorVersionUpgrade(v bool) *DBInstance {
 	s.AutoMinorVersionUpgrade = &v
+	return s
+}
+
+// SetAutomaticRestartTime sets the AutomaticRestartTime field's value.
+func (s *DBInstance) SetAutomaticRestartTime(v time.Time) *DBInstance {
+	s.AutomaticRestartTime = &v
 	return s
 }
 
@@ -25097,6 +25117,10 @@ type DBSnapshot struct {
 	// Provides the option group name for the DB snapshot.
 	OptionGroupName *string `type:"string"`
 
+	// Specifies the time of the CreateDBSnapshot operation in Coordinated Universal
+	// Time (UTC). Doesn't change when the snapshot is copied.
+	OriginalSnapshotCreateTime *time.Time `type:"timestamp"`
+
 	// The percentage of the estimated data that has been transferred.
 	PercentProgress *int64 `type:"integer"`
 
@@ -25109,13 +25133,15 @@ type DBSnapshot struct {
 	ProcessorFeatures []*ProcessorFeature `locationNameList:"ProcessorFeature" type:"list"`
 
 	// Specifies when the snapshot was taken in Coordinated Universal Time (UTC).
+	// Changes for the copy when the snapshot is copied.
 	SnapshotCreateTime *time.Time `type:"timestamp"`
 
 	// Provides the type of the DB snapshot.
 	SnapshotType *string `type:"string"`
 
 	// The DB snapshot Amazon Resource Name (ARN) that the DB snapshot was copied
-	// from. It only has value in case of cross-customer or cross-region copy.
+	// from. It only has a value in the case of a cross-account or cross-Region
+	// copy.
 	SourceDBSnapshotIdentifier *string `type:"string"`
 
 	// The Amazon Web Services Region that the DB snapshot was created in or copied
@@ -25247,6 +25273,12 @@ func (s *DBSnapshot) SetMasterUsername(v string) *DBSnapshot {
 // SetOptionGroupName sets the OptionGroupName field's value.
 func (s *DBSnapshot) SetOptionGroupName(v string) *DBSnapshot {
 	s.OptionGroupName = &v
+	return s
+}
+
+// SetOriginalSnapshotCreateTime sets the OriginalSnapshotCreateTime field's value.
+func (s *DBSnapshot) SetOriginalSnapshotCreateTime(v time.Time) *DBSnapshot {
+	s.OriginalSnapshotCreateTime = &v
 	return s
 }
 
@@ -27990,9 +28022,19 @@ type DescribeDBClustersInput struct {
 	//
 	// Supported filters:
 	//
+	//    * clone-group-id - Accepts clone group identifiers. The results list will
+	//    only include information about the DB clusters associated with these clone
+	//    groups.
+	//
 	//    * db-cluster-id - Accepts DB cluster identifiers and DB cluster Amazon
 	//    Resource Names (ARNs). The results list will only include information
 	//    about the DB clusters identified by these ARNs.
+	//
+	//    * domain - Accepts Active Directory directory IDs. The results list will
+	//    only include information about the DB clusters associated with these domains.
+	//
+	//    * engine - Accepts engine names. The results list will only include information
+	//    about the DB clusters for these engines.
 	Filters []*Filter `locationNameList:"Filter" type:"list"`
 
 	// Optional Boolean parameter that specifies whether the output includes information
@@ -30834,13 +30876,7 @@ func (s *DescribeExportTasksOutput) SetMarker(v string) *DescribeExportTasksOutp
 type DescribeGlobalClustersInput struct {
 	_ struct{} `type:"structure"`
 
-	// A filter that specifies one or more global DB clusters to describe.
-	//
-	// Supported filters:
-	//
-	//    * db-cluster-id - Accepts DB cluster identifiers and DB cluster Amazon
-	//    Resource Names (ARNs). The results list will only include information
-	//    about the DB clusters identified by these ARNs.
+	// This parameter isn't currently supported.
 	Filters []*Filter `locationNameList:"Filter" type:"list"`
 
 	// The user-supplied DB cluster identifier. If this parameter is specified,
@@ -35015,7 +35051,7 @@ func (s *ModifyDBClusterSnapshotAttributeOutput) SetDBClusterSnapshotAttributesR
 type ModifyDBInstanceInput struct {
 	_ struct{} `type:"structure"`
 
-	// The new amount of storage (in gibibytes) to allocate for the DB instance.
+	// The new amount of storage in gibibytes (GiB) to allocate for the DB instance.
 	//
 	// For MariaDB, MySQL, Oracle, and PostgreSQL, the value supplied must be at
 	// least 10% greater than the current value. Values that are not at least 10%
@@ -35382,8 +35418,8 @@ type ModifyDBInstanceInput struct {
 	// This includes restoring privileges that might have been accidentally revoked.
 	MasterUserPassword *string `type:"string"`
 
-	// The upper limit to which Amazon RDS can automatically scale the storage of
-	// the DB instance.
+	// The upper limit in gibibytes (GiB) to which Amazon RDS can automatically
+	// scale the storage of the DB instance.
 	//
 	// For more information about this setting, including limitations that apply
 	// to it, see Managing capacity automatically with Amazon RDS storage autoscaling
@@ -38232,7 +38268,7 @@ func (s *PendingMaintenanceAction) SetOptInStatus(v string) *PendingMaintenanceA
 type PendingModifiedValues struct {
 	_ struct{} `type:"structure"`
 
-	// The allocated storage size for the DB instance specified in gibibytes .
+	// The allocated storage size for the DB instance specified in gibibytes (GiB).
 	AllocatedStorage *int64 `type:"integer"`
 
 	// The number of days for which automated backups are retained.
@@ -41732,8 +41768,8 @@ type RestoreDBInstanceFromS3Input struct {
 	//    * Can't be a reserved word for the chosen database engine.
 	MasterUsername *string `type:"string"`
 
-	// The upper limit to which Amazon RDS can automatically scale the storage of
-	// the DB instance.
+	// The upper limit in gibibytes (GiB) to which Amazon RDS can automatically
+	// scale the storage of the DB instance.
 	//
 	// For more information about this setting, including limitations that apply
 	// to it, see Managing capacity automatically with Amazon RDS storage autoscaling
@@ -42391,8 +42427,8 @@ type RestoreDBInstanceToPointInTimeInput struct {
 	// Valid values: license-included | bring-your-own-license | general-public-license
 	LicenseModel *string `type:"string"`
 
-	// The upper limit to which Amazon RDS can automatically scale the storage of
-	// the DB instance.
+	// The upper limit in gibibytes (GiB) to which Amazon RDS can automatically
+	// scale the storage of the DB instance.
 	//
 	// For more information about this setting, including limitations that apply
 	// to it, see Managing capacity automatically with Amazon RDS storage autoscaling
@@ -44605,7 +44641,7 @@ type ValidStorageOptions struct {
 	// The valid range of provisioned IOPS. For example, 1000-20000.
 	ProvisionedIops []*Range `locationNameList:"Range" type:"list"`
 
-	// The valid range of storage in gibibytes. For example, 100 to 16384.
+	// The valid range of storage in gibibytes (GiB). For example, 100 to 16384.
 	StorageSize []*Range `locationNameList:"Range" type:"list"`
 
 	// The valid storage types for your DB instance. For example, gp2, io1.

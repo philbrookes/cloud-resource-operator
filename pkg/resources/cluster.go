@@ -3,6 +3,8 @@ package resources
 import (
 	"bytes"
 	"context"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/integr8ly/cloud-resource-operator/apis/aro/v1alpha1"
 	"io"
 
 	v1 "github.com/integr8ly/cloud-resource-operator/apis/config/v1"
@@ -28,6 +30,28 @@ func GetClusterID(ctx context.Context, c client.Client) (string, error) {
 	return infra.Status.InfrastructureName, nil
 }
 
+func GetAzureRegion(ctx context.Context, c client.Client) (string, error) {
+	cluster, err := GetAzureCluster(ctx, c)
+	if err != nil {
+		return "", errorUtil.Wrapf(err, "failure happened while retrieving cluster infrastructure")
+	}
+
+	return cluster.Spec.Location, nil
+}
+
+func GetAzureEnvironment(ctx context.Context, c client.Client) (azure.Environment, error) {
+	cluster, err := GetAzureCluster(ctx, c)
+	if err != nil {
+		return azure.Environment{}, errorUtil.Wrapf(err, "failure happened while retrieving cluster infrastructure")
+	}
+
+	env, err := azure.EnvironmentFromName(cluster.Spec.AZEnvironment)
+	if err != nil {
+		return azure.Environment{}, err
+	}
+	return env, nil
+}
+
 func GetAWSRegion(ctx context.Context, c client.Client) (string, error) {
 	infra, err := GetClusterInfrastructure(ctx, c)
 	if err != nil {
@@ -45,6 +69,15 @@ func GetClusterInfrastructure(ctx context.Context, c client.Client) (*v1.Infrast
 		return nil, errorUtil.Wrap(err, "failed to retrieve cluster infrastructure")
 	}
 	return infra, nil
+}
+
+func GetAzureCluster(ctx context.Context, c client.Client) (*v1alpha1.Cluster, error){
+	cluster := &v1alpha1.Cluster{}
+	if err := c.Get(ctx, types.NamespacedName{Name: "cluster"}, cluster); err != nil {
+		return nil, errorUtil.Wrap(err, "failed to retrieve cluster information")
+	}
+
+	return cluster, nil
 }
 
 //go:generate moq -out cluster_moq.go . PodCommander

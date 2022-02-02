@@ -18,6 +18,7 @@ package main
 
 import (
 	"flag"
+	"github.com/integr8ly/cloud-resource-operator/apis/aro/v1alpha1"
 	"os"
 
 	"k8s.io/apimachinery/pkg/runtime"
@@ -50,6 +51,7 @@ func init() {
 
 	utilruntime.Must(integreatlyv1alpha1.AddToScheme(scheme))
 	utilruntime.Must(v1.AddToScheme(scheme))
+	utilruntime.Must(v1alpha1.AddToScheme(scheme))
 
 	utilruntime.Must(apis.AddToSchemes.AddToScheme(scheme))
 	// +kubebuilder:scaffold:scheme

@@ -31,7 +31,6 @@ option go_package = "v1";
 // If a client chooses a duplicate name, for instance, the route status conditions are used
 // to indicate the route cannot be chosen.
 message Route {
-  // Standard object metadata.
   optional k8s.io.apimachinery.pkg.apis.meta.v1.ObjectMeta metadata = 1;
 
   // spec is the desired state of the route
@@ -84,7 +83,6 @@ message RouteIngressCondition {
 
 // RouteList is a collection of Routes.
 message RouteList {
-  // Standard object metadata.
   optional k8s.io.apimachinery.pkg.apis.meta.v1.ListMeta metadata = 1;
 
   // items is a list of routes
@@ -105,7 +103,7 @@ message RoutePort {
 // roundrobin scheduling the portion of requests that go to each backend is the backend
 // weight divided by the sum of all of the backend weights. When the backend has more than
 // one endpoint the requests that end up on the backend are roundrobin distributed among
-// the endpoints. Weights are between 0 and 256 with default 1. Weight 0 causes no requests
+// the endpoints. Weights are between 0 and 256 with default 100. Weight 0 causes no requests
 // to the backend. If all weights are zero the route will be considered to have no backends
 // and return a standard 503 response.
 //
@@ -141,7 +139,7 @@ message RouteSpec {
   optional string path = 2;
 
   // to is an object the route should use as the primary backend. Only the Service kind
-  // is allowed, and it will be defaulted to Service. If the weight field (0-256 default 1)
+  // is allowed, and it will be defaulted to Service. If the weight field (0-256 default 100)
   // is set to zero, no traffic will be sent to this backend.
   optional RouteTargetReference to = 3;
 
@@ -181,7 +179,7 @@ message RouteTargetReference {
   // name of the service/target that is being referred to. e.g. name of the service
   optional string name = 2;
 
-  // weight as an integer between 0 and 256, default 1, that specifies the target's relative weight
+  // weight as an integer between 0 and 256, default 100, that specifies the target's relative weight
   // against other target reference objects. 0 suppresses requests to this backend.
   optional int32 weight = 3;
 }

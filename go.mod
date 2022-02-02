@@ -3,31 +3,29 @@ module github.com/integr8ly/cloud-resource-operator
 go 1.16
 
 require (
-	github.com/aws/aws-sdk-go v1.39.2
-	github.com/containerd/typeurl v0.0.0-20190228175220-2a93cfde8c20 // indirect
+	github.com/Azure/azure-sdk-for-go v61.3.0+incompatible
+	github.com/Azure/go-autorest/autorest v0.11.20
+	github.com/Azure/go-autorest/autorest/adal v0.9.15
+	github.com/Azure/go-autorest/autorest/to v0.4.0
+	github.com/aws/aws-sdk-go v1.40.37
 	github.com/coreos/prometheus-operator v0.38.1-0.20200424145508-7e176fda06cc
-	github.com/elazarl/goproxy v0.0.0-20190421051319-9d40249d3c2f // indirect
-	github.com/fatih/color v1.10.0 // indirect
-	github.com/ghodss/yaml v1.0.1-0.20180820084758-c7ce16629ff4 // indirect
-	github.com/google/uuid v1.2.0
-	github.com/gregjones/httpcache v0.0.0-20190203031600-7a902570cb17 // indirect
+	github.com/google/uuid v1.3.0
 	github.com/hashicorp/go-version v1.2.1
 	github.com/lib/pq v1.10.0
-	github.com/mattn/go-runewidth v0.0.9 // indirect
 	github.com/onsi/ginkgo v1.16.4
-	github.com/onsi/gomega v1.15.0
-	github.com/openshift/api v3.9.1-0.20190424152011-77b8897ec79a+incompatible
+	github.com/onsi/gomega v1.16.0
+	github.com/openshift/api v3.9.1-0.20191111211345-a27ff30ebf09+incompatible
 	github.com/openshift/cloud-credential-operator v0.0.0-20211102171825-9d7d082fe277
 	github.com/operator-framework/operator-sdk v1.14.0
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.11.0
 	github.com/sirupsen/logrus v1.8.1
-	golang.org/x/net v0.0.0-20210614182718-04defd469f4e
+	golang.org/x/net v0.0.0-20210903162142-ad29c8ab022f
 	k8s.io/api v0.22.2
 	k8s.io/apiextensions-apiserver v0.22.2
 	k8s.io/apimachinery v0.22.2
 	k8s.io/client-go v12.0.0+incompatible
-	k8s.io/kube-openapi v0.0.0-20210421082810-95288971da7e
+	k8s.io/kube-openapi v0.0.0-20210817084001-7fbd8d59e5b8
 	rsc.io/letsencrypt v0.0.3 // indirect
 	sigs.k8s.io/controller-runtime v0.10.2
 	sigs.k8s.io/kubebuilder/v3 v3.2.0 // indirect

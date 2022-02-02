@@ -16,6 +16,7 @@ const (
 	ManagedDeploymentType = "managed"
 
 	AWSDeploymentStrategy       = "aws"
+	AzureDeploymentStrategy		= "azure"
 	OpenShiftDeploymentStrategy = "openshift"
 
 	BlobStorageResourceType ResourceType = "blobstorage"

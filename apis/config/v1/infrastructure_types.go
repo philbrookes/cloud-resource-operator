@@ -114,12 +114,20 @@ type PlatformStatus struct {
 	// AWS contains settings specific to the Amazon Web Services infrastructure provider.
 	// +optional
 	AWS *AWSPlatformStatus `json:"aws,omitempty"`
+	Azure *AzurePlatformStatus `json:"azure,omitempty"`
 }
 
 // AWSPlatformStatus holds the current status of the Amazon Web Services infrastructure provider.
 type AWSPlatformStatus struct {
 	// region holds the default AWS region for new AWS resources created by the cluster.
 	Region string `json:"region"`
+}
+// AzurePlatformStatus holds the current status of the Amazon Web Services infrastructure provider.
+type AzurePlatformStatus struct {
+	// region holds the default AWS region for new AWS resources created by the cluster.
+	CloudName string `json:"cloudName,omitempty"`
+	NetworkResourceGroupName string `json:"networkResourceGroupName,omitempty"`
+	resourceGroupName string `json:"resourceGroupName,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
